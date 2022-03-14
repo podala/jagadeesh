@@ -22,3 +22,4 @@ An excessive number of stages might be a sign of a performance problem.
 Garbage collection(GC) is another key factor that might cause performance issues. Check it out from the Executors tab of Spark UI. You may typically use Java GC options in any GC-related case.
 Serialization also plays an important role in the performance of any distributed application. Formats that are slow to serialize objects into, or consume a large number of bytes, will greatly slow down the computation. For Scala/Java-based Spark applications, Kryo serialization is highly recommended. In Pyspark, Marshal and Pickle serializers are supported, MarshalSerializer is faster than PickleSerializer but supports fewer data types
 Note1 that you might experience a performance loss if you prefer to use Spark in the docker environment. In our project, we observe that Spark applications take a bit longer time with the same configuration metrics in the docker environment.
+Testing github changes 
