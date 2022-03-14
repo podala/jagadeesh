@@ -1,0 +1,24 @@
+Don’t use count() when you don’t need to return the exact number of rows. To check if data frame is empty, len(df.head(1))>0 will be more accurate considering the performance issues.
+Do not use show() in your production code.
+It is a good practice to use df.explain() to get insight into the internal representation of a data frame in Spark(the final version of the physical plan).
+Always try to minimize the data size by filtering irrelevant data(rows/columns) before joinings.
+Monitor Spark applications online/offline. It might give you any clues about unbalanced data partitions, where the jobs are stuck, and query plans. An alternative to Spark UI might be Ganglia.
+Basically, avoid using loops.
+Focus on built-in functions rather than custom solutions.
+Ensure that key columns in join operation do not include null values.
+Put the bigger dataset on the left in joins.
+Keep in mind that Spark runs with Lazy Evaluation logic. So, nothing is triggered until an action is called. That might result in meaningless error codes.
+Unpersist the data in the cache, if you don't need it for the rest of the code.
+Close/stop your Spark session when you are done with your application.
+In Spark 3.0, significant improvements are achieved to tackle performance issues by Adaptive Query Execution, take upgrading the version into consideration.
+Prefer data frames to RDDs for data manipulations.
+In general, tasks larger than about 20 KiB are probably worth optimizing.
+In general, it is recommended 2–3 tasks per CPU core in your cluster.
+It is always good to have a block within 128MB per partition to achieve parallelism.
+Csv and Json data file formats give high write performance but are slower for reading, on the other hand, Parquet file format is very fast and gives the best performance in reading and slower than the other mentioned file formats concerning writing operation.
+The physical plan is read from the bottom up, whereas the DAG is read from the top down.
+The Exchange means a shuffle occurred between stages, and it is basically a performance degradation.
+An excessive number of stages might be a sign of a performance problem.
+Garbage collection(GC) is another key factor that might cause performance issues. Check it out from the Executors tab of Spark UI. You may typically use Java GC options in any GC-related case.
+Serialization also plays an important role in the performance of any distributed application. Formats that are slow to serialize objects into, or consume a large number of bytes, will greatly slow down the computation. For Scala/Java-based Spark applications, Kryo serialization is highly recommended. In Pyspark, Marshal and Pickle serializers are supported, MarshalSerializer is faster than PickleSerializer but supports fewer data types
+Note1 that you might experience a performance loss if you prefer to use Spark in the docker environment. In our project, we observe that Spark applications take a bit longer time with the same configuration metrics in the docker environment.
